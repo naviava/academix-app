@@ -10,6 +10,8 @@ import { Pencil } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Course } from "@prisma/client";
+
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -23,7 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 
 interface DescriptionFormProps {
-  initialData: { description: string };
+  initialData: Course;
   courseId: string;
 }
 
@@ -39,7 +41,7 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: { description: initialData?.description || "" },
   });
 
   const { isSubmitting, isValid } = useMemo(
