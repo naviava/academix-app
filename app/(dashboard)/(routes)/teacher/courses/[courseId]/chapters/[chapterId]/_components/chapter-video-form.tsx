@@ -7,23 +7,29 @@ import { useRouter } from "next/navigation";
 import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
+import MuxPlayer from "@mux/mux-player-react";
+import { Pencil, PlusCircle, Video } from "lucide-react";
 
-import { Course } from "@prisma/client";
+import { Chapter, MuxData } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import FileUpload from "@/components/file-upload";
 
-interface ImageFormProps {
-  initialData: Course;
+interface ChapterVideoFormProps {
+  initialData: Chapter & { muxData?: MuxData | null };
   courseId: string;
+  chapterId: string;
 }
 
 const formSchema = z.object({
-  imageUrl: z.string().min(1, { message: "Image is required" }),
+  videoUrl: z.string().min(1),
 });
 
-function ImageForm({ initialData, courseId }: ImageFormProps) {
+function ChapterVideoForm({
+  initialData,
+  courseId,
+  chapterId,
+}: ChapterVideoFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -32,67 +38,71 @@ function ImageForm({ initialData, courseId }: ImageFormProps) {
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {
-        await axios.patch(`/api/courses/${courseId}`, values);
-        toast.success("Course updated");
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}`,
+          values,
+        );
+        toast.success("Chapter updated");
         toggleEdit();
         router.refresh();
       } catch (err) {
         toast.error("Something went wrong");
       }
     },
-    [courseId, router, toggleEdit],
+    [courseId, router, chapterId, toggleEdit],
   );
 
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Course image
+        Chapter video
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing && <>Cancel</>}
-          {!isEditing && !initialData.imageUrl && (
+          {!isEditing && !initialData.videoUrl && (
             <>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add an image
+              Add an video
             </>
           )}
-          {!isEditing && !!initialData?.imageUrl && (
+          {!isEditing && !!initialData?.videoUrl && (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit image
+              Edit video
             </>
           )}
         </Button>
       </div>
       {!isEditing &&
-        (!initialData.imageUrl ? (
+        (!initialData.videoUrl ? (
           <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
-            <ImageIcon className="h-10 w-10 text-slate-500" />
+            <Video className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
           <div className="relative mt-2 aspect-video">
-            <Image
-              fill
-              src={initialData.imageUrl}
-              alt="Upload"
-              className="rounded-md object-cover"
-            />
+            <MuxPlayer playbackId={initialData?.muxData?.playbackId || ""} />
           </div>
         ))}
       {isEditing && (
         <div>
           <FileUpload
-            endpoint="courseImage"
+            endpoint="chapterVideo"
             onChange={(url) => {
-              if (url) onSubmit({ imageUrl: url });
+              if (url) onSubmit({ videoUrl: url });
             }}
           />
           <div className="mt-4 text-xs text-muted-foreground">
-            16:9 aspect ratio is recommended
+            Upload the video file for this chapter.
           </div>
+        </div>
+      )}
+      {!!initialData.videoUrl && !isEditing && (
+        <div className="mt-2 text-xs text-muted-foreground">
+          Videos can take a while to process. Refresh the page if the video does
+          not appear.
         </div>
       )}
     </div>
   );
 }
 
-export default memo(ImageForm);
+export default memo(ChapterVideoForm);
