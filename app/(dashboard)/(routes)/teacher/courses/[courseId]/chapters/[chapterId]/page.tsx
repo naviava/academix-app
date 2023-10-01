@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs";
 import { ArrowLeft, LayoutDashboard } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge";
+import ChapterDescriptionForm from "./_components/chapter-description-form";
 import ChapterTitleForm from "./_components/chapter-title-form";
 
 import { db } from "@/lib/db";
@@ -64,6 +65,11 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
               <h2 className="text-xl">Customize this chapter</h2>
             </div>
             <ChapterTitleForm
+              initialData={chapter}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
+            />
+            <ChapterDescriptionForm
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
