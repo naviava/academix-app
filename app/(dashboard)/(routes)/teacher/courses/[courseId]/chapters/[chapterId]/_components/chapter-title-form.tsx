@@ -20,16 +20,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-interface TitleFormProps {
+interface ChapterTitleFormProps {
   initialData: { title: string };
   courseId: string;
+  chapterId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
+  title: z.string().min(1),
 });
 
-function TitleForm({ initialData, courseId }: TitleFormProps) {
+function ChapterTitleForm({
+  initialData,
+  courseId,
+  chapterId,
+}: ChapterTitleFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -48,21 +53,24 @@ function TitleForm({ initialData, courseId }: TitleFormProps) {
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {
-        await axios.patch(`/api/courses/${courseId}`, values);
-        toast.success("Course updated");
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}`,
+          values,
+        );
+        toast.success("Chapter updated");
         toggleEdit();
         router.refresh();
       } catch (err) {
         toast.error("Something went wrong");
       }
     },
-    [courseId, router, toggleEdit],
+    [courseId, router, chapterId, toggleEdit],
   );
 
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Course title
+        Chapter title
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
@@ -89,7 +97,7 @@ function TitleForm({ initialData, courseId }: TitleFormProps) {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. Web development bootcamp"
+                      placeholder="e.g. Introduction to this course"
                       {...field}
                     />
                   </FormControl>
@@ -109,4 +117,4 @@ function TitleForm({ initialData, courseId }: TitleFormProps) {
   );
 }
 
-export default memo(TitleForm);
+export default memo(ChapterTitleForm);
