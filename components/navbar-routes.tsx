@@ -20,8 +20,8 @@ export default function NavbarRoutes({}: NavbarRoutesProps) {
     [pathname],
   );
 
-  const isPlayerPage = useMemo(
-    () => pathname?.includes("/chapter"),
+  const isCoursePage = useMemo(
+    () => pathname?.includes("/courses"),
     [pathname],
   );
 
@@ -35,7 +35,7 @@ export default function NavbarRoutes({}: NavbarRoutesProps) {
         </div>
       )}
       <div className="ml-auto flex gap-x-2">
-        {isTeacherPage || isPlayerPage ? (
+        {isTeacherPage || isCoursePage ? (
           <Link href="/">
             <Button size="sm" variant="ghost">
               <LogOut className="mr-2 h-4 w-4" />

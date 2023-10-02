@@ -8,7 +8,7 @@ import { DataTable } from "./_components/data-table";
 import { db } from "@/lib/db";
 export default async function CoursesPage() {
   const { userId } = auth();
-  if (!userId) redirect("/");
+  if (!userId) return redirect("/");
 
   const courses = await db.course.findMany({
     where: { userId },
@@ -17,9 +17,6 @@ export default async function CoursesPage() {
 
   return (
     <div className="p-6">
-      {/* <Link href="/teacher/create">
-        <Button>New Course</Button>
-      </Link> */}
       <DataTable columns={columns} data={courses} />
     </div>
   );

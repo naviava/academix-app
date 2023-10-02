@@ -20,7 +20,7 @@ interface ChapterIdPageProps {
 
 export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
   const { userId } = auth();
-  if (!userId) redirect("/");
+  if (!userId) return redirect("/");
 
   const chapter = await db.chapter.findUnique({
     where: {
