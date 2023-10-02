@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { LogOut } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import SearchInput from "@/components/search-input";
 
 interface NavbarRoutesProps {}
 
@@ -24,23 +25,32 @@ export default function NavbarRoutes({}: NavbarRoutesProps) {
     [pathname],
   );
 
+  const isSearchPage = useMemo(() => pathname === "/search", [pathname]);
+
   return (
-    <div className="ml-auto flex gap-x-2">
-      {isTeacherPage || isPlayerPage ? (
-        <Link href="/">
-          <Button size="sm" variant="ghost">
-            <LogOut className="mr-2 h-4 w-4" />
-            Exit
-          </Button>
-        </Link>
-      ) : (
-        <Link href="/teacher/courses">
-          <Button size="sm" variant="ghost">
-            Teacher mode
-          </Button>
-        </Link>
+    <>
+      {isSearchPage && (
+        <div className="hidden md:block">
+          <SearchInput />
+        </div>
       )}
-      <UserButton afterSignOutUrl="/" />
-    </div>
+      <div className="ml-auto flex gap-x-2">
+        {isTeacherPage || isPlayerPage ? (
+          <Link href="/">
+            <Button size="sm" variant="ghost">
+              <LogOut className="mr-2 h-4 w-4" />
+              Exit
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/teacher/courses">
+            <Button size="sm" variant="ghost">
+              Teacher mode
+            </Button>
+          </Link>
+        )}
+        <UserButton afterSignOutUrl="/" />
+      </div>
+    </>
   );
 }
