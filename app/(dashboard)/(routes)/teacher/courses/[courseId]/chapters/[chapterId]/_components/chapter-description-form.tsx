@@ -35,7 +35,7 @@ const formSchema = z.object({
   description: z.string().min(1),
 });
 
-function ChapterDescriptionForm({
+export default function ChapterDescriptionForm({
   initialData,
   courseId,
   chapterId,
@@ -129,5 +129,3 @@ function ChapterDescriptionForm({
     </div>
   );
 }
-
-export default memo(ChapterDescriptionForm);

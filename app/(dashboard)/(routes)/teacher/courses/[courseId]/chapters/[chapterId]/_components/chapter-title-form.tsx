@@ -30,7 +30,7 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-function ChapterTitleForm({
+export default function ChapterTitleForm({
   initialData,
   courseId,
   chapterId,
@@ -116,5 +116,3 @@ function ChapterTitleForm({
     </div>
   );
 }
-
-export default memo(ChapterTitleForm);

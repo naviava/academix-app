@@ -34,7 +34,7 @@ const formSchema = z.object({
   price: z.coerce.number(),
 });
 
-function PriceForm({ initialData, courseId }: PriceFormProps) {
+export default function PriceForm({ initialData, courseId }: PriceFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -124,5 +124,3 @@ function PriceForm({ initialData, courseId }: PriceFormProps) {
     </div>
   );
 }
-
-export default memo(PriceForm);

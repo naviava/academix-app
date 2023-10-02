@@ -23,7 +23,10 @@ const formSchema = z.object({
   url: z.string().min(1),
 });
 
-function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
+export default function AttachmentForm({
+  initialData,
+  courseId,
+}: AttachmentFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [deletionId, setDeletionId] = useState<string | null>(null);
@@ -126,5 +129,3 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
     </div>
   );
 }
-
-export default memo(AttachmentForm);

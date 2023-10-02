@@ -23,7 +23,7 @@ const formSchema = z.object({
   imageUrl: z.string().min(1, { message: "Image is required" }),
 });
 
-function ImageForm({ initialData, courseId }: ImageFormProps) {
+export default function ImageForm({ initialData, courseId }: ImageFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -94,5 +94,3 @@ function ImageForm({ initialData, courseId }: ImageFormProps) {
     </div>
   );
 }
-
-export default memo(ImageForm);

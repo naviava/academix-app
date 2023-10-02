@@ -34,7 +34,11 @@ const formSchema = z.object({
   categoryId: z.string().min(1),
 });
 
-function CategoryForm({ initialData, courseId, options }: CategoryFormProps) {
+export default function CategoryForm({
+  initialData,
+  courseId,
+  options,
+}: CategoryFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -123,5 +127,3 @@ function CategoryForm({ initialData, courseId, options }: CategoryFormProps) {
     </div>
   );
 }
-
-export default memo(CategoryForm);

@@ -33,7 +33,10 @@ const formSchema = z.object({
   description: z.string().min(1, { message: "Description is required" }),
 });
 
-function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
+export default function DescriptionForm({
+  initialData,
+  courseId,
+}: DescriptionFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -121,5 +124,3 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
     </div>
   );
 }
-
-export default memo(DescriptionForm);

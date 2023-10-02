@@ -25,7 +25,7 @@ const formSchema = z.object({
   videoUrl: z.string().min(1),
 });
 
-function ChapterVideoForm({
+export default function ChapterVideoForm({
   initialData,
   courseId,
   chapterId,
@@ -104,5 +104,3 @@ function ChapterVideoForm({
     </div>
   );
 }
-
-export default memo(ChapterVideoForm);

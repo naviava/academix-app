@@ -29,7 +29,7 @@ const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
 });
 
-function TitleForm({ initialData, courseId }: TitleFormProps) {
+export default function TitleForm({ initialData, courseId }: TitleFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -108,5 +108,3 @@ function TitleForm({ initialData, courseId }: TitleFormProps) {
     </div>
   );
 }
-
-export default memo(TitleForm);

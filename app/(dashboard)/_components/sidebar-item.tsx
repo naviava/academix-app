@@ -12,7 +12,11 @@ interface SidebarItemProps {
   href: string;
 }
 
-function SidebarItem({ icon: Icon, label, href }: SidebarItemProps) {
+export default function SidebarItem({
+  icon: Icon,
+  label,
+  href,
+}: SidebarItemProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -52,5 +56,3 @@ function SidebarItem({ icon: Icon, label, href }: SidebarItemProps) {
     </button>
   );
 }
-
-export default memo(SidebarItem);
