@@ -60,12 +60,13 @@ export default function ChaptersForm({
         await axios.post(`/api/courses/${courseId}/chapters`, values);
         toast.success("Chapter updated");
         toggleCreating();
+        form.reset();
         router.refresh();
       } catch (err) {
         toast.error("Something went wrong");
       }
     },
-    [courseId, router, toggleCreating],
+    [courseId, router, toggleCreating, form],
   );
 
   const onReorder = useCallback(
