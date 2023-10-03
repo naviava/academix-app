@@ -1,8 +1,12 @@
 import { redirect } from "next/navigation";
 
+import { File } from "lucide-react";
 import { auth } from "@clerk/nextjs";
 
 import Banner from "@/components/banner";
+import Preview from "@/components/preview";
+import { Separator } from "@/components/ui/separator";
+import CourseEnrollButton from "./_components/course-enroll-button";
 import VideoPlayer from "./_components/video-player";
 
 import { getChapter } from "@/actions/get-chapter";
@@ -56,6 +60,41 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
             isLocked={isLocked}
             completeOnEnd={completeOnEnd}
           />
+        </div>
+        <div>
+          <div className="flex flex-col items-center justify-between p-4 md:flex-row">
+            <h2 className="mb-2 text-2xl font-semibold">{chapter.title}</h2>
+            {purchase ? (
+              <>{/* TODO: Add course progress button. */}</>
+            ) : (
+              <CourseEnrollButton
+                courseId={params.courseId}
+                price={course.price!}
+              />
+            )}
+          </div>
+          <Separator />
+          <div>
+            <Preview value={chapter.description!} />
+          </div>
+          {!!attachments.length && (
+            <>
+              <Separator />
+              <div className="p-4">
+                {attachments.map((attachment) => (
+                  <a
+                    key={attachment.id}
+                    href={attachment.url}
+                    target="_blank"
+                    className="flex w-full items-center rounded-md border bg-sky-200 p-3 text-sky-700 hover:underline"
+                  >
+                    <File />
+                    <p className="line-clamp-1">{attachment.name}</p>
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
