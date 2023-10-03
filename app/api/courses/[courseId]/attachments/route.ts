@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
+
 import { auth } from "@clerk/nextjs";
+
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 
 export async function POST(
   req: Request,
@@ -11,6 +14,8 @@ export async function POST(
     const { url } = await req.json();
 
     if (!userId) return new NextResponse("Unauthenticated", { status: 401 });
+    if (!isTeacher(userId))
+      return new NextResponse("Unauthorized", { status: 401 });
     if (!url)
       return new NextResponse("Attachment is required", { status: 400 });
 

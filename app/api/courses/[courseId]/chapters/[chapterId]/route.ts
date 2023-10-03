@@ -4,6 +4,7 @@ import Mux from "@mux/mux-node";
 import { auth } from "@clerk/nextjs";
 
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 
 const { Video } = new Mux(
   process.env.MUX_TOKEN_ID!,
@@ -20,6 +21,8 @@ export async function PATCH(
     const { isPublished, ...values } = await req.json();
 
     if (!userId) return new NextResponse("Unauthenticated", { status: 401 });
+    if (!isTeacher(userId))
+      return new NextResponse("Unauthorized", { status: 401 });
     if (!courseId)
       return new NextResponse("Course ID is required", { status: 400 });
     if (!chapterId)

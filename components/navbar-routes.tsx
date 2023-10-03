@@ -5,14 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { LogOut } from "lucide-react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import SearchInput from "@/components/search-input";
+import { isTeacher } from "@/lib/teacher";
 
 interface NavbarRoutesProps {}
 
 export default function NavbarRoutes({}: NavbarRoutesProps) {
+  const { userId } = useAuth();
   const pathname = usePathname();
 
   const isTeacherPage = useMemo(
@@ -42,13 +44,13 @@ export default function NavbarRoutes({}: NavbarRoutesProps) {
               Exit
             </Button>
           </Link>
-        ) : (
+        ) : isTeacher(userId) ? (
           <Link href="/teacher/courses">
             <Button size="sm" variant="ghost">
               Teacher mode
             </Button>
           </Link>
-        )}
+        ) : null}
         <UserButton afterSignOutUrl="/" />
       </div>
     </>

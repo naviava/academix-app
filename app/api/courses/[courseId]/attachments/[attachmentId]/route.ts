@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
+
 import { auth } from "@clerk/nextjs";
+
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 
 export async function DELETE(
   req: Request,
@@ -10,6 +13,8 @@ export async function DELETE(
     const { userId } = auth();
 
     if (!userId) return new NextResponse("Unauthenticated", { status: 401 });
+    if (!isTeacher(userId))
+      return new NextResponse("Unauthorized", { status: 401 });
     if (!params.courseId)
       return new NextResponse("Course ID is required", { status: 400 });
     if (!params.attachmentId)
